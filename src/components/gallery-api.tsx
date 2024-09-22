@@ -10,10 +10,11 @@ const instance = axios.create({
 
 type ApiResponse = {
   results: Photo[],
-  total_pages:number,
-  
+  total_pages: number,
+  total: number,
 }
-const fetchPhotosWithTopic = async (topic: string, page:number):Promise<ApiResponse> => {
+
+const fetchPhotosWithTopic = async (topic: string, page:number):(Promise<ApiResponse> ) => {
   const response = await instance.get<ApiResponse>(
     `?query=${topic}&orientation=squarish&per_page=12&page=${page}`
   );

@@ -2,7 +2,7 @@ import { Photo } from '../App/App.types';
 import css from './ImageCard.module.css';
 
 const ImageCard = ({ urls, small, alt, openModal, likes, setCurrentPhoto }:Photo) => {
-  const handleClick = () => {
+  const handleClick = ():void => {
     setCurrentPhoto({ url: urls.full, alt: alt });
     openModal();
   };

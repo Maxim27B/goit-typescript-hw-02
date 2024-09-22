@@ -1,24 +1,26 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import css from './SearchBar.module.css';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaSearch } from 'react-icons/fa';
 import { Field, Formik } from 'formik';
 
+type SearchFormValues = {
+  query: string;
+};
+
 type Props = {
-  onSubmit: (values:string) => void,
+  onSubmit: (value:string) => void,
 }
 
-type FormValues = {
-  query:string,
-}
-const initialValues:FormValues = {
-  query: '',
-}
+const initialValues: SearchFormValues = {
+  query: "",
+};
 
 const SearchBar = ({ onSubmit }: Props) => {
   const [notification, setNotification] = useState<boolean>(false);
 
-  const handleSubmit = (values:FormValues):void => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>, values: SearchFormValues)=> {
+    evt.preventDefault();
     if (values.query.trim() === '') {
       setNotification(true);
     } else {
@@ -33,7 +35,7 @@ const SearchBar = ({ onSubmit }: Props) => {
   };
   return (
     <header className={css.header}>
-      <Formik onSubmit={handleSubmit} initialValues = {initialValues}>
+      <Formik onSubmit={handleSubmit} initialValues={initialValues}>
         <form className={css.form}>
           <button className={css.btn} type="submit" onClick={notify}>
             <FaSearch className={css.searchIcon} />
@@ -46,7 +48,7 @@ const SearchBar = ({ onSubmit }: Props) => {
             autoFocus
             placeholder="Search images and photos"
           />
-        </form>
+      </form>
       </Formik>
       {notification && (
         <Toaster

@@ -6,7 +6,7 @@ import LoadMoreBtn from '../LoadMoreBtn/LoadMoreBtn';
 import Loader from '../Loader/Loader';
 import SearchBar from '../SearchBar/SearchBar';
 import fetchPhotosWithTopic from '../gallery-api';
-import { FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CurrentPhoto, Photo } from './App.types';
 
 const App = () => {
@@ -33,8 +33,8 @@ const App = () => {
         if (data.results.length === 0) {
           setError(true);
         } else {
-          setPhotos((prev:null | Photo[]):Photo[] =>
-            currentPage === 1 ? data.results : [...prev, ...data.results]
+          setPhotos((prev:Photo[] | null):Photo[] =>
+            currentPage === 1 ? data.results : [...prev || [], ...data.results]
           );
           setTotalPages(data.total_pages);
         }
@@ -56,10 +56,10 @@ const App = () => {
     setCurrentPage(currentPage + 1);
   };
 
-  function openModal() {
+  function openModal():void {
     setModalIsOpen(true);
   }
-  function closeModal() {
+  function closeModal():void {
     setModalIsOpen(false);
   }
 
