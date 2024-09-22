@@ -1,3 +1,4 @@
+
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import ImageGallery from '../ImageGallery/ImageGallery';
 import ImageModal from '../ImageModal/ImageModal';
@@ -5,33 +6,34 @@ import LoadMoreBtn from '../LoadMoreBtn/LoadMoreBtn';
 import Loader from '../Loader/Loader';
 import SearchBar from '../SearchBar/SearchBar';
 import fetchPhotosWithTopic from '../gallery-api';
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+import { CurrentPhoto, Photo } from './App.types';
 
 const App = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [photos, setPhotos] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [inputValue, setInputValue] = useState(null);
-  const [error, setError] = useState(false);
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPhoto, setCurrentPhoto] = useState({
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [photos, setPhotos] = useState<Photo[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [error, setError] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPhoto, setCurrentPhoto] = useState<CurrentPhoto>({
     url: '',
     alt: '',
   });
 
   useEffect(() => {
-    async function fetchPhotos(query) {
+    async function fetchPhotos(query:string):Promise<void> {
       try {
         setError(false);
         setIsLoading(true);
-        if (inputValue === null) return;
+        if (inputValue === '') return;
         const data = await fetchPhotosWithTopic(query, currentPage);
         if (totalPages < currentPage) return;
         if (data.results.length === 0) {
           setError(true);
         } else {
-          setPhotos(prev =>
+          setPhotos((prev:null | Photo[]):Photo[] =>
             currentPage === 1 ? data.results : [...prev, ...data.results]
           );
           setTotalPages(data.total_pages);
@@ -45,14 +47,12 @@ const App = () => {
     fetchPhotos(inputValue);
   }, [inputValue, currentPage, totalPages]);
 
-  const onSubmit = evt => {
-    const form = evt.currentTarget;
+  const onSubmit = (query: string): void => {
+    setInputValue(query);
     setCurrentPage(1);
-    setInputValue(form.elements.query.value);
-    form.reset();
   };
 
-  const onLoadMore = () => {
+  const onLoadMore = ():void => {
     setCurrentPage(currentPage + 1);
   };
 
@@ -90,7 +90,6 @@ const App = () => {
             margin: 'auto',
             width: '500px',
             display: 'flex',
-            margin: 'auto',
             justifyContent: 'center',
           }}
         >

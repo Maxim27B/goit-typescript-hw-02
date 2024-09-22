@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
 import css from './ImageModal.module.css';
+import { CurrentPhoto } from '../App/App.types';
 Modal.setAppElement('#root');
 
 const customStyles = {
@@ -17,7 +18,13 @@ const customStyles = {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
 };
-const ImageModal = ({ modalIsOpen, closeModal, currentPhoto }) => {
+
+type Props = {
+  modalIsOpen: boolean,
+  closeModal: () => void,
+  currentPhoto: CurrentPhoto,
+}
+const ImageModal = ({ modalIsOpen, closeModal, currentPhoto }:Props) => {
   return (
     <Modal
       style={customStyles}

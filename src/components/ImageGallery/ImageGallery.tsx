@@ -1,7 +1,14 @@
+import { CurrentPhoto, Photo } from '../App/App.types';
 import ImageCard from '../ImageCard/ImageCard';
 import css from './ImageGallery.module.css';
 
-const ImageGallery = ({ photos, openModal, setCurrentPhoto }) => {
+type Props = {
+  photos:Photo[] | null,
+  openModal: () => void,
+  setCurrentPhoto:({url, alt}:CurrentPhoto) => void,
+}
+
+const ImageGallery = ({ photos, openModal, setCurrentPhoto }:Props) => {
   return (
     <ul className={css.photoList}>
       {Array.isArray(photos) &&
@@ -11,9 +18,8 @@ const ImageGallery = ({ photos, openModal, setCurrentPhoto }) => {
               <ImageCard
                 openModal={openModal}
                 small={photo.urls.small}
-                alt={photo.description}
+                alt={photo.alt}
                 likes={photo.likes}
-                description={photo.description}
                 urls={photo.urls}
                 setCurrentPhoto={setCurrentPhoto}
               />
