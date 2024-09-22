@@ -1,13 +1,12 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import css from './SearchBar.module.css';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaSearch } from 'react-icons/fa';
 import { Field, Formik } from 'formik';
 
-type SearchFormValues = {
+interface SearchFormValues {
   query: string;
-};
-
+}
 type Props = {
   onSubmit: (value:string) => void,
 }
@@ -19,8 +18,8 @@ const initialValues: SearchFormValues = {
 const SearchBar = ({ onSubmit }: Props) => {
   const [notification, setNotification] = useState<boolean>(false);
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>, values: SearchFormValues)=> {
-    evt.preventDefault();
+  const handleSubmit = (values: SearchFormValues, actions:any) => {
+    actions.preventDefault();
     if (values.query.trim() === '') {
       setNotification(true);
     } else {
